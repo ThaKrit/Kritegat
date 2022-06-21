@@ -5,6 +5,6 @@ class ShowImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('images/logo.png');
+    return Image.asset('images/logo.png'); //ดึงรูปมาจากโฟเดอร์ images
   }
 }
