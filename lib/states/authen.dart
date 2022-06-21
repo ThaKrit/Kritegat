@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:kritegat/utility/my_constant.dart';
+import 'package:kritegat/utility/my_dialog.dart';
 import 'package:kritegat/widget/show_button.dart';
 import 'package:kritegat/widget/show_image.dart';
 import 'package:kritegat/widget/show_text.dart';
@@ -15,6 +18,7 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   bool redEye = true;
+  String? user, password;
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +33,43 @@ class _AuthenState extends State<Authen> {
             FocusScope.of(context).requestFocus(
                 FocusScopeNode()); //ให้เป็นสถานะของ Focus เป็น Enable
           },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                newLogo(boxConstraints),
-                newTitle(),
-                formUser(boxConstraints),
-                formPassword(boxConstraints),
-                ShowButton(),
-              ],
+          child: Container(
+            decoration: MyConstant().bgBox(), //สีพื้นหลัง
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  newLogo(boxConstraints),
+                  newTitle(boxConstraints),
+                  formUser(boxConstraints),
+                  formPassword(boxConstraints),
+                  buttonLogin(boxConstraints),
+                ],
+              ),
             ),
           ),
         );
       }),
+    );
+  }
+
+  Container buttonLogin(BoxConstraints boxConstraints) {
+    return Container(
+      margin: EdgeInsets.only(top: 5),
+      width: boxConstraints.maxWidth * 0.4,
+      child: ShowButton(
+        label: 'Login',
+        pressFunc: () {
+          print('user = $user , password = $password');
+          if ((user?.isEmpty ?? true) || (password?.isEmpty ?? true)) {
+            print("Have Space");
+            MyDialog(context: context).normalDialog(
+                title: 'Have space', subTitle: 'Please Fill Blank');
+          } else {
+            print("NO Space");
+          }
+        },
+      ),
     );
   }
 
@@ -59,7 +86,9 @@ class _AuthenState extends State<Authen> {
         },
         obSecu: redEye, //ทำให้ตัวอักษรในช่องเป็น ***
         iconData: Icons.lock_outline,
-        changeFung: (String string) {},
+        changeFung: (String string) {
+          password = string.trim();
+        },
         hint: 'Password',
       ),
     );
@@ -72,19 +101,38 @@ class _AuthenState extends State<Authen> {
       height: 40,
       child: ShowForm(
         iconData: Icons.account_circle,
-        changeFung: (String string) {},
+        changeFung: (String string) {
+          user = string.trim();
+        },
         hint: 'Username',
       ),
     );
   }
 
-  ShowText newTitle() => ShowText(text: 'Login');
+  SizedBox newTitle(BoxConstraints boxConstraints) {
+    return SizedBox(
+      width: boxConstraints.maxWidth * 0.7,
+      child: Row(
+        children: [
+          ShowText(text: 'Login'),
+        ],
+      ),
+    );
+  }
 
   //นำรูปมาแสดงจากไฟล์ show_image.dart
   SizedBox newLogo(BoxConstraints boxConstraints) {
     return SizedBox(
-      width: boxConstraints.maxWidth * 0.50, //กำรูปโดยคิดจากขนาดจอแล้วนะมาคูณ
-      child: ShowImage(),
+      width: boxConstraints.maxWidth * 0.8,
+      child: Row(
+        children: [
+          SizedBox(
+            width: boxConstraints.maxWidth *
+                0.50, //กำรูปโดยคิดจากขนาดจอแล้วนะมาคูณ
+            child: ShowImage(),
+          ),
+        ],
+      ),
     );
   }
 }

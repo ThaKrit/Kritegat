@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:kritegat/utility/my_constant.dart';
 
 class ShowForm extends StatelessWidget {
   final IconData iconData;
@@ -22,6 +23,8 @@ class ShowForm extends StatelessWidget {
       obscureText: obSecu ?? false,
       onChanged: changeFung,
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.7), //ใส่สีพื้นหลังกับopartity
         //prefixIcon: icon ด้านหน้า
         suffixIcon: redEyeFunc == null
             ? Icon(iconData)
@@ -34,9 +37,11 @@ class ShowForm extends StatelessWidget {
           left: 20,
         ),
         enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: MyConstant.dark),
           borderRadius: BorderRadius.circular(20),
         ),
         focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: MyConstant.active),
           borderRadius: BorderRadius.circular(20),
         ),
         hintText: hint,
