@@ -6,8 +6,15 @@ import 'package:kritegat/widget/show_text.dart';
 import 'package:kritegat/widget/show_form.dart';
 
 //Stateless ถ้าจะดึง theme ต้องใช้ Scaffold();
-class Authen extends StatelessWidget {
+class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
+
+  @override
+  State<Authen> createState() => _AuthenState();
+}
+
+class _AuthenState extends State<Authen> {
+  bool redEye = true;
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +23,23 @@ class Authen extends StatelessWidget {
       // Constraints จะตรวจสอบสเกลหน้าจอว่าใช้ขนาดเท่าไหร่
       body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints boxConstraints) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              newLogo(boxConstraints),
-              newTitle(),
-              formUser(boxConstraints),
-              formPassword(boxConstraints),
-              ShowButton(),
-            ],
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            FocusScope.of(context).requestFocus(
+                FocusScopeNode()); //ให้เป็นสถานะของ Focus เป็น Enable
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                newLogo(boxConstraints),
+                newTitle(),
+                formUser(boxConstraints),
+                formPassword(boxConstraints),
+                ShowButton(),
+              ],
+            ),
           ),
         );
       }),
@@ -34,15 +48,21 @@ class Authen extends StatelessWidget {
 
   Container formPassword(BoxConstraints boxConstraints) {
     return Container(
-              margin: const EdgeInsets.only(top: 5), //เว้นเฉพาะข้างบน
-              width: boxConstraints.maxWidth * 0.85,
-              height: 40,
-              child: ShowForm(
-                iconData: Icons.lock_outline,
-                changeFung: (String string) {},
-                hint: 'Password',
-              ),
-            );
+      margin: const EdgeInsets.only(top: 5), //เว้นเฉพาะข้างบน
+      width: boxConstraints.maxWidth * 0.85,
+      height: 40,
+      child: ShowForm(
+        redEyeFunc: () {
+          setState(() {
+            redEye = !redEye;
+          });
+        },
+        obSecu: redEye, //ทำให้ตัวอักษรในช่องเป็น ***
+        iconData: Icons.lock_outline,
+        changeFung: (String string) {},
+        hint: 'Password',
+      ),
+    );
   }
 
   Container formUser(BoxConstraints boxConstraints) {

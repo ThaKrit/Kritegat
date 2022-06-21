@@ -5,20 +5,29 @@ class ShowForm extends StatelessWidget {
   final IconData iconData;
   final Function(String) changeFung;
   final String hint;
+  final bool? obSecu;
+  final Function()? redEyeFunc;
   const ShowForm({
     Key? key,
     required this.iconData,
     required this.changeFung,
     required this.hint,
+    this.obSecu,
+    this.redEyeFunc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obSecu ?? false,
       onChanged: changeFung,
       decoration: InputDecoration(
         //prefixIcon: icon ด้านหน้า
-        suffixIcon: Icon(iconData), //icon ด้านหลัง
+        suffixIcon: redEyeFunc == null
+            ? Icon(iconData)
+            : IconButton(
+                onPressed: redEyeFunc,
+                icon: Icon(Icons.remove_red_eye)), //icon ด้านหลัง
         contentPadding: const EdgeInsets.only(
           top: 4,
           bottom: 4,
