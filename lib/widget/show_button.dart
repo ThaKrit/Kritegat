@@ -17,7 +17,8 @@ class ShowButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         //ทำปุ่มโค้ง
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        primary: MyConstant.primary,
+        primary: MyConstant.primary, //สีปุ่ม
+        onPrimary: MyConstant.dark, //ตัวหนังสือในปุ้ม
       ),
       onPressed: pressFunc,
       child: Text(label),

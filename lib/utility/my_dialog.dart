@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kritegat/utility/my_constant.dart';
 import 'package:kritegat/widget/show_image.dart';
 import 'package:kritegat/widget/show_text.dart';
+import 'package:kritegat/widget/show_text_button.dart';
 
 class MyDialog {
   final BuildContext context;
@@ -13,6 +15,8 @@ class MyDialog {
   Future<void> normalDialog({
     required String title,
     required String subTitle,
+    String? label,
+    Function()? pressFunc,
   }) async {
     showDialog(
       context: context,
@@ -26,8 +30,20 @@ class MyDialog {
             text: title,
             textStyle: MyConstant().h2Style(),
           ),
-          subtitle: ShowText(text: subTitle),
+          subtitle: ShowText(
+            text: subTitle,
+            textStyle: MyConstant().h3Style(),
+          ),
         ),
+        actions: [
+          pressFunc == null
+              ? ShowTextButton(
+                  label: "OK",
+                  pressFunc: () {
+                    Navigator.pop(context);
+                  })
+              : ShowTextButton(label: label!, pressFunc: pressFunc),
+        ],
       ),
     );
   }

@@ -22,7 +22,7 @@ class MyConstant {
   TextStyle h1Style() {
     return GoogleFonts.mali(
       textStyle: TextStyle(
-        fontSize: 36,
+        fontSize: 30,
         color: dark,
         fontWeight: FontWeight.bold,
       ),
@@ -32,7 +32,7 @@ class MyConstant {
   TextStyle h2Style() {
     return GoogleFonts.raleway(
       textStyle: TextStyle(
-        fontSize: 18,
+        fontSize: 20,
         color: dark,
         fontWeight: FontWeight.bold,
       ),
@@ -44,6 +44,16 @@ class MyConstant {
       textStyle: TextStyle(
         fontSize: 14,
         color: dark,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  TextStyle h3ActiveStyle() {
+    return GoogleFonts.mali(
+      textStyle: TextStyle(
+        fontSize: 14,
+        color: active,
         fontWeight: FontWeight.bold,
       ),
     );

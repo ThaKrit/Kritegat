@@ -1,12 +1,20 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:kritegat/models/user_model.dart';
+import 'package:kritegat/states/my_service.dart';
 import 'package:kritegat/utility/my_constant.dart';
 import 'package:kritegat/utility/my_dialog.dart';
 import 'package:kritegat/widget/show_button.dart';
 import 'package:kritegat/widget/show_image.dart';
 import 'package:kritegat/widget/show_text.dart';
 import 'package:kritegat/widget/show_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Stateless ถ้าจะดึง theme ต้องใช้ Scaffold();
 class Authen extends StatefulWidget {
@@ -64,9 +72,10 @@ class _AuthenState extends State<Authen> {
           if ((user?.isEmpty ?? true) || (password?.isEmpty ?? true)) {
             print("Have Space");
             MyDialog(context: context).normalDialog(
-                title: 'Have space', subTitle: 'Please Fill Blank');
+                title: 'Have space!!', subTitle: 'Please Fill Blank');
           } else {
             print("NO Space");
+            processCheckLogin();
           }
         },
       ),
@@ -134,5 +143,54 @@ class _AuthenState extends State<Authen> {
         ],
       ),
     );
+  }
+
+  //ทำ CheckLogin เมื่อไหร่ก็ตามที่โยนขึ้น Server มันจะ respont กลับมา
+  Future<void> processCheckLogin() async {
+    String path =
+        'https://www.androidthai.in.th/egat/getUserWhereUserkrit.php?isAdd=true&user=$user';
+    await Dio().get(path).then((value) {
+      print('value ==> $value');
+
+      if (value.toString() == 'null') {
+        print("No $user in My Database");
+        MyDialog(context: context).normalDialog(
+            title: 'User False', subTitle: 'No $user in my database!!');
+      } else {
+        var result = json.decode(value.data);
+        print('result = $result');
+        for (var element in result) {
+          UserModel userModel = UserModel.fromMap(element);
+          if (password == userModel.password) {
+            MyDialog(context: context).normalDialog(
+                pressFunc: () async {
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+
+                  var data = <String>[];
+                  data.add(userModel.id);
+                  data.add(userModel.name);
+                  data.add(userModel.position);
+
+                  preferences.setStringList('data', data).then((value) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Myservice(),
+                        ),
+                        (route) => false);
+                  });
+                },
+                label: "Go to Service",
+                title: 'Welcome to App',
+                subTitle: 'Login Success Welcome ${userModel.name}');
+          } else {
+            MyDialog(context: context).normalDialog(
+                title: 'Password False',
+                subTitle: "No $password in My Database");
+          }
+        }
+      }
+    });
   }
 }
