@@ -6,6 +6,7 @@ class MyConstant {
   static Color primary = const Color.fromARGB(255, 0, 211, 200);
   static Color dark = Color.fromARGB(255, 39, 39, 39);
   static Color active = const Color.fromARGB(255, 204, 184, 70);
+  static Color details = Color.fromARGB(255, 168, 3, 173);
 
   //Method
 
@@ -54,6 +55,16 @@ class MyConstant {
       textStyle: TextStyle(
         fontSize: 14,
         color: active,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  TextStyle h4Style() {
+    return GoogleFonts.mali(
+      textStyle: TextStyle(
+        fontSize: 14,
+        color: details,
         fontWeight: FontWeight.bold,
       ),
     );

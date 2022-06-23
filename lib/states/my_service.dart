@@ -5,6 +5,7 @@ import 'package:kritegat/models/user_model.dart';
 import 'package:kritegat/utility/my_constant.dart';
 import 'package:kritegat/utility/my_dialog.dart';
 import 'package:kritegat/widget/show_icon_button.dart';
+import 'package:kritegat/widget/show_progress.dart';
 import 'package:kritegat/widget/show_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,10 +28,7 @@ class _MyserviceState extends State<Myservice> {
     Icons.done,
   ];
 
-  var widgets = <Widget>[
-    const NonFinishJob(),
-    const FinishJob(),
-  ];
+  var widgets = <Widget>[];
 
   var bottonNavigator = <BottomNavigationBarItem>[];
   int indexBodys = 0;
@@ -39,6 +37,23 @@ class _MyserviceState extends State<Myservice> {
   void initState() {
     super.initState();
 
+    createNaviBar();
+    provessFindUserLogin();
+  }
+
+  Future<void> provessFindUserLogin() async {
+    //instant = object // await = ให้มันทำงานจนเสร็จก่อน
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var dataLogins = preferences.getStringList(
+        'data'); // ทำไมคีย์ต้องเป็น data? เพราะตอนเรียกเราเรียก data
+    print('dataLogin ==> $dataLogins');
+    widgets.add(NonFinishJob(dataUserLogins: dataLogins!));
+    widgets.add(FinishJob());
+    setState(() {});
+  }
+
+//createNaivicationBar
+  void createNaviBar() {
     for (var i = 0; i < titles.length; i++) {
       bottonNavigator.add(
         BottomNavigationBarItem(
@@ -56,7 +71,11 @@ class _MyserviceState extends State<Myservice> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: newAppBar(context),
-      body: widgets[indexBodys],
+      body: widgets.isEmpty
+          ? const ShowProgress()
+          : widgets[
+              indexBodys], //ถ้า widgets ว่างจะให้โชว์ Showprogress ถ้าไม่ว่างจะโชว์ widget...
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indexBodys,
         items: bottonNavigator,
