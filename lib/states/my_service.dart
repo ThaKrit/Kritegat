@@ -48,7 +48,7 @@ class _MyserviceState extends State<Myservice> {
         'data'); // ทำไมคีย์ต้องเป็น data? เพราะตอนเรียกเราเรียก data
     print('dataLogin ==> $dataLogins');
     widgets.add(NonFinishJob(dataUserLogins: dataLogins!));
-    widgets.add(FinishJob());
+    widgets.add(FinishJob(idofficer: dataLogins[3]));
     setState(() {});
   }
 
