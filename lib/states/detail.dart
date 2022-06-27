@@ -30,6 +30,7 @@ class _DetailState extends State<Detail> {
   File? file;
 
   @override
+  
   void initState() {
     super.initState();
     jobModel = widget.jobModel;

@@ -8,6 +8,7 @@ import 'package:kritegat/models/job_model.dart';
 import 'package:kritegat/states/detail.dart';
 import 'package:kritegat/utility/my_calculate.dart';
 import 'package:kritegat/utility/my_constant.dart';
+import 'package:kritegat/widget/show_button.dart';
 import 'package:kritegat/widget/show_progress.dart';
 
 import 'package:kritegat/widget/show_text.dart';
@@ -70,7 +71,10 @@ class _NonFinishJobState extends State<NonFinishJob> {
           showTitle(head: 'ชื่อพนักงาน:', value: dataUserLogin[1]),
           showTitle(head: 'ตำแหน่ง:', value: dataUserLogin[2]),
           jobModels.isEmpty
-              ? const ShowProgress()
+              ? const Text(
+                  'No Job',
+                  style: TextStyle(fontSize: 40),
+                ) //ShowProgress()
               : ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),

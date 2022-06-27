@@ -50,5 +50,6 @@ class JobModel {
 
   String toJson() => json.encode(toMap());
 
-  factory JobModel.fromJson(String source) => JobModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory JobModel.fromJson(String source) =>
+      JobModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
